@@ -1,0 +1,42 @@
+#!/bin/bash -l
+
+# The default number of cores for a job is 1.
+# If a job needs more cores, it would include the
+# -pe omp flag and use a number greater than 1.
+#  For example:  #$ -pe omp 10
+
+#$ -m ea
+
+# Submit an array job with XX tasks 
+#$ -t 1-60
+
+# The default length of time for a job is 12 hours. 
+# Asking for less time has no benefit for a job in terms
+# of scheduling.  To get more than 12 hours, use
+# this flag (here set for 24 hours): 
+
+#$ -l h_rt=24:00:00
+
+# Assign a name to this job.
+#$ -N lattice
+
+module purge
+module load python3/3.6.5
+module load openmpi/3.1.4
+module load fenics/deprecated
+export DIJITSO_CACHE_DIR=/tmp/cache/dijitso
+export INSTANT_CACHE_DIR=/tmp/cache/instant/cache
+export INSTANT_ERROR_DIR=/tmp/cache/instant/error
+python3 -c 'import fenics'
+pip install --no-cache-dir --prefix=/projectnb/lejlab/pythonlibs perlin-noise
+PYTHONPATH=/projectnb/lejlab/pythonlibs/lib/python3.6/site-packages/:$PYTHONPATH
+PYTHONPATH=/projectnb/lejlab/pythonlibs/lib/python3.8/site-packages/:$PYTHONPATH
+PATH=/projectnb/lejlab/pythonlibs/bin:$PATH
+
+inputs=('True 1 3' 'True 1 4' 'True 1 5' 'True 2 3' 'True 2 4' 'True 2 5' 'True 3 3' 'True 3 4' 'True 3 5' 'True 4 3' 'True 4 4' 'True 4 5' 'True 5 3' 'True 5 4' 'True 5 5' 'True 6 3' 'True 6 4' 'True 6 5' 'True 7 3' 'True 7 4' 'True 7 5' 'True 8 3' 'True 8 4' 'True 8 5' 'True 9 3' 'True 9 4' 'True 9 5' 'True 10 3' 'True 10 4' 'True 10 5' 'True 11 3' 'True 11 4' 'True 11 5' 'True 12 3' 'True 12 4' 'True 12 5' 'True 13 3' 'True 13 4' 'True 13 5' 'True 14 3' 'True 14 4' 'True 14 5' 'True 15 3' 'True 15 4' 'True 15 5' 'True 16 3' 'True 16 4' 'True 16 5' 'True 17 3' 'True 17 4' 'True 17 5' 'True 18 3' 'True 18 4' 'True 18 5' 'True 19 3' 'True 19 4' 'True 19 5' 'True 20 3' 'True 20 4' 'True 20 5')
+
+index=$(($SGE_TASK_ID-1))
+taskinput=${inputs[$index]}
+
+python3 FEA_code_for_workstation_lattice.py $taskinput  result.$SGE_TASK_ID
+
