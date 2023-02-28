@@ -15,7 +15,6 @@ create_mesh_rectangle = False
 create_mesh_lattice = False
 create_mesh_devices = False
 run_FEA_rectangle = False
-create_mesh_lattice = False
 run_FEA_lattice = False
 create_custom_grid = False
 create_mesh_device = False

@@ -143,6 +143,32 @@ def composite_beam(ax, x0, y0, x1, s, num_segs):
     return
 
 
+def composite_beam_random(ax, x0, y0, x1, s, support_list):
+    # first randomly generate support locations
+    num_segs = len(support_list) - 1
+    y_val = y0
+    for kk in range(0, num_segs):
+        if kk == 0:
+            xs0 = x0
+            ys0 = y_val
+            xs1 = support_list[1]
+            ys1 = y_val
+            y_val = composite_beam_seg(ax, xs0, ys0, xs1, ys1, s)
+        elif kk == num_segs - 1:
+            xs0 = support_list[kk]
+            ys0 = y_val
+            xs1 = x1
+            ys1 = y_val
+            ss_beam(ax, xs0, ys0, xs1, ys1, s)
+        else:
+            xs0 = support_list[kk]
+            ys0 = y_val
+            xs1 = support_list[kk + 1]
+            ys1 = y_val
+            y_val = composite_beam_seg(ax, xs0, ys0, xs1, ys1, s)
+    return
+
+
 def rectangular_device(ax, x_ll, y_ll, wid, dep, num_sensors, lw_rect, lc, fc):
     # plot a rectangle, fill it with gray
     ax.add_patch(Rectangle((x_ll, y_ll), wid, dep, fc=fc, ec=lc, linewidth=lw_rect))

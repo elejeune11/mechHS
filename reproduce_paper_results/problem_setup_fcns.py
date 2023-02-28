@@ -258,7 +258,6 @@ def compute_performance(input_data: np.ndarray, input_data_orig: np.ndarray, out
     return accuracy, spearmanr
 
 
-
 def compute_performance_rectangle_sweep(mypath: Path, input_data_orig: np.ndarray):
     save_path = create_folder(mypath, "FEA_results_rectangle_summarized")
     FEA_RES_accuracy = []

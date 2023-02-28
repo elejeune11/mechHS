@@ -7,6 +7,7 @@ from pathlib import Path
 plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 12})
 
+
 #############################################################################################
 # import relevant data
 #############################################################################################
@@ -62,6 +63,67 @@ spearmanr_345678910_true_ensemble = [np.mean(accuracy_spearmanr_ss_3_ensemble[:,
 spearmanr_rect = np.loadtxt(str(save_path) + "/spearmanr_rect.txt")
 spearmanr_lattice = np.loadtxt(str(save_path) + "/spearmanr_lattice.txt")
 spearmanr_custom = np.loadtxt(str(save_path) + "/spearmanr_custom.txt")
+
+#############################################################################################
+# create plots MUTED!! -- probability of a hash collision vs. distance between inputs
+#############################################################################################
+fig = plt.figure(figsize=(7.5, 5))
+ax = plt.subplot(111)
+
+
+# first set of plots -- probability of collision vs. distance
+# simply supported
+
+def plot_collisions_muted(ax):
+    middle_dist_all = []
+    match_ratio_all = []
+    ix = 0
+    for fix_whole_bottom in [True, False]:
+        for depth_num in [1, 2, 3, 4, 5]:
+            for sensor_num in [2, 3, 4, 5]:
+                val_x = middle_dist_rect[ix]
+                val_y = match_ratio_rect[ix]
+                if fix_whole_bottom:
+                    ax.plot(val_x, val_y, "-o", color=(0.5, 0.5, 0.5), markerfacecolor=(0.5, 0.5, 0.5), markeredgecolor="k",linewidth=.5, zorder=0)
+                else:
+                    ax.plot(val_x, val_y, "-o", color=(0.5, 0.5, 0.5), markerfacecolor=(0.5, 0.5, 0.5), markeredgecolor="k", linewidth=.5, zorder=0)
+                middle_dist_all.append(val_x)
+                match_ratio_all.append(val_y)
+                ix += 1
+    ax.plot(val_x, val_y, "-o", color=(0.5, 0.5, 0.5), markerfacecolor=(0.5, 0.5, 0.5), markeredgecolor="k",linewidth=.5, zorder=0, label="individual")
+    middle_dist_all = np.asarray(middle_dist_all)
+    match_ratio_all = np.asarray(match_ratio_all)
+    middle_dist_mean = np.mean(middle_dist_all, axis=0)
+    match_ratio_mean = np.mean(match_ratio_all, axis=0)
+    ax.plot(middle_dist_mean, match_ratio_mean, "k-o", markerfacecolor=(1.0, 0.0, 0.0), markeredgecolor="k", markersize=15, markeredgewidth=3, linewidth=3, zorder=500, label="mean")
+    return middle_dist_mean, match_ratio_mean
+
+
+middle_dist_mean, match_ratio_mean = plot_collisions_muted(ax)
+inset_ax = ax.inset_axes([0.59, 0.59, 0.38, 0.38])
+inset_ax.plot(middle_dist_mean, match_ratio_mean, "k-o", markerfacecolor=(1.0, 0.0, 0.0), markeredgecolor="k", markersize=10, markeredgewidth=2, linewidth=3, zorder=500)
+inset_ax.grid(True)
+inset_ax.set_xticks([])
+inset_ax.set_yticks([])
+inset_ax.set_xlabel(r"$||w_i - w_j||_{\infty}$")
+inset_ax.set_ylabel(r"$p_{collision}$")
+
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+
+# Put a legend to the right of the current axis
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+plt.ticklabel_format(style='sci', axis='x', scilimits=(0,0))
+plt.grid(True)
+ax.set_xlabel(r"$||w_i - w_j||_{\infty}$")
+ax.set_ylabel(r"$p_{collision}$")
+plt.xlim((np.min(middle_dist_mean) - 0.01, np.max(middle_dist_mean) + 0.01))
+plt.ylim((0.0, 0.18))
+plt.title("probability of hash collisions")
+plt.savefig(str(fig_path) + "/collision_curve_muted.png")
+plt.savefig(str(fig_path) + "/collision_curve_muted.eps")
+
 
 #############################################################################################
 # create plots -- probability of a hash collision vs. distance between inputs

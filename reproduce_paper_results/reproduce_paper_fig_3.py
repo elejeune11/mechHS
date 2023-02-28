@@ -3,6 +3,8 @@ import numpy as np
 import os
 from pathlib import Path
 import reproduce_figure_fcns as rff
+from typing import List
+
 
 plt.rcParams['text.usetex'] = True
 
@@ -80,6 +82,58 @@ axs[1, 4].axis("off")
 
 plt.savefig(str(fig_path) + "/all_ss.png")
 plt.savefig(str(fig_path) + "/all_ss.pdf")
+
+#############################################################################################
+# simply supported ensemble (appendix)
+#############################################################################################
+
+
+def check_all_dist(pt_new: float, pt_old_list: List, mL: float):
+    for pt_old in pt_old_list:
+        if np.abs(pt_old - pt_new) < mL:
+            return False
+    return True
+
+
+def generate_new_mechHS(x0: float, y0: float, x1: float, m: float, num_supports: int):
+    Lmin = x0
+    Lmax = x1
+    L = Lmax - Lmin
+    mL = m * L
+    # generate all supports
+    support_list = []
+    pt_0 = np.random.random() * L + Lmin
+    support_list.append(pt_0)
+    for _ in range(1, num_supports):
+        pt_new = np.random.random() * L + Lmin
+        while check_all_dist(pt_new, support_list, mL) is False:
+            pt_new = np.random.random() * L + Lmin
+        support_list.append(pt_new)
+    support_list = np.sort(support_list)
+    return support_list
+
+
+np.random.seed(157)
+x0 = 0
+y0 = 0
+s = 1
+r = 1
+x1 = 11
+y1 = y0
+m = 0.05
+num_supports = 5
+fig, axs = plt.subplots(3, 4, figsize=(10, 1.8))
+for ix in range(0, 12):
+    row_ix = int(np.floor(ix / 4.0))
+    col_ix = ix % 4
+    ax = axs[row_ix, col_ix]
+    support_list = generate_new_mechHS(x0, y0, x1, m, num_supports)
+    rff.composite_beam_random(ax, x0, y0, x1, s, support_list)
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+plt.savefig(str(fig_path) + "/ensemble_ss.png")
+plt.savefig(str(fig_path) + "/ensemble_ss.pdf")
 
 #############################################################################################
 # rectangular (rectangle 3c)
