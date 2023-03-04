@@ -9,6 +9,9 @@
    id="svg5"
    inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
    sodipodi:docname="figure_3_appendix_ensemble.svg"
+   inkscape:export-filename="/Users/emma/Desktop/Actual_Desktop/docker_files/hash_fcn/mechHS/reproduce_paper_results/figures/figure_3_appendix_ensemble.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -24,9 +27,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.39779223"
-     inkscape:cx="612.12859"
-     inkscape:cy="417.30327"
+     inkscape:zoom="0.37241614"
+     inkscape:cx="667.26431"
+     inkscape:cy="491.38579"
      inkscape:window-width="1312"
      inkscape:window-height="916"
      inkscape:window-x="0"
@@ -7724,6 +7727,13 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="fill:#ffffff;stroke:none;stroke-width:0.750001;stroke-linecap:round;stroke-linejoin:bevel;fill-opacity:1"
+       id="rect4333"
+       width="224.00017"
+       height="34.695698"
+       x="52.418407"
+       y="49.463051" />
     <g
        id="g47123"
        transform="translate(0.18137113)">

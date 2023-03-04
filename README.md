@@ -186,6 +186,10 @@ In this study, we investigate the performance of both simply supported composite
 <img alt="illustration of simply supported mechanical systems" src="figs/system_ss.png" width="100%" />
 </p>
 
+<p align = "center">
+<img alt="illustration of simply supported ensemble mechanical systems" src="figs/system_ensemble.png" width="100%" />
+</p>
+
 We also investigate the performance of rectangular domains with varying depth, number of sensors, and with and without full fixity at the bottom of the domain:
 
 <p align = "center">
