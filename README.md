@@ -295,6 +295,27 @@ For context, all folders contained in the ``reproduce_paper_results`` folder are
 
 All python files contained in the ``reproduce_paper_results`` folder are as follows:
 
+| name | purpose |
+| -----| ------- |
+| ``applied_loads.py`` | functions to recreate the applied loads |
+| ``FEA_code_for_workstation_custom.py`` | wrapper for functions in ``fea_simulation.py`` specific to custom domains |
+| ``FEA_code_for_workstation_lattice.py`` | wrapper for functions in ``fea_simulation.py`` specific to lattice domains |
+| ``FEA_code_for_workstation_rectangle.py`` | wrapper for functions in ``fea_simulation.py`` specific to rectangular domains |
+| ``fea_simulation.py`` | function to run a FEA simulation with FEniCS |
+| ``mesh_generation.py`` | functions to generate FEA meshes with mshr |
+| ``problem_setup_fcns.py`` | additional functions to process and analyze data |
+| ``reproduce_figure_fcns.py`` | additional functions for formatting data for plotting and illustration |
+| ``reproduce_paper_confusion_matrix.py`` | script to reproduce appendix Fig. 9 |
+| ``reproduce_paper_fig_1.py`` | script to help create Fig. 1 |
+| ``reproduce_paper_fig_2.py`` | script to help create Fig. 2 and appendix Fig. 6 |
+| ``reproduce_paper_fig_3.py`` | script to help create Fig. 3 and appendix Fig. 7|
+| ``reproduce_paper_fig_4.py`` | script to generate Fig. 4 and appendix Fig. 8 |
+| ``reproduce_paper_fig_5_table.py`` | script to organize the data in Table 1, a supplement to Fig. 5 |
+| ``reproduce_paper_fig_5.py`` | script to generate Fig. 5 |
+| ``reproduce_paper_simulation_analysis.py`` | script to run all analysis for the paper |
+| ``reproduce_paper_simulation_runs.py`` | script to run all simulations for the paper |
+| ``simply_supported_beams.py`` | script with functions to simulate composite simply supported beams |
+
 
 ## References to Related Work <a name="references"></a>
 
