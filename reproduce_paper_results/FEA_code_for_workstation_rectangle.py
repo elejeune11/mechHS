@@ -6,23 +6,24 @@ import problem_setup_fcns as fcns
 import sys
 
 
-def get_inputs_for_qsub_script(fixed_btm=False):
+def get_inputs_for_qsub_script():
     qsub_inputs = ""
     qsub_inputs_list = []
     counter = 0
     for applied_load_type in range(1, 21):
         for depth_num in [1, 2, 3, 4, 5]:
             for sensor_num in [2, 3, 4, 5]:
-                if fixed_btm is False:
-                    str_qsub = "'True %i %i %i " % (applied_load_type, depth_num, sensor_num) + "False' "
-                else:
-                    str_qsub = "'True %i %i %i " % (applied_load_type, depth_num, sensor_num) + "True' "
-                qsub_inputs += str_qsub
-                counter += 1
-                if fixed_btm is False:
-                    qsub_inputs_list.append("True %i %i %i " % (applied_load_type, depth_num, sensor_num) + "False")
-                else:
-                    qsub_inputs_list.append("True %i %i %i " % (applied_load_type, depth_num, sensor_num) + "True")
+                for fixed_btm in [True, False]:
+                    if fixed_btm is False:
+                        str_qsub = "'True %i %i %i " % (applied_load_type, depth_num, sensor_num) + "False' "
+                    else:
+                        str_qsub = "'True %i %i %i " % (applied_load_type, depth_num, sensor_num) + "True' "
+                    qsub_inputs += str_qsub
+                    counter += 1
+                    if fixed_btm is False:
+                        qsub_inputs_list.append("True %i %i %i " % (applied_load_type, depth_num, sensor_num) + "False")
+                    else:
+                        qsub_inputs_list.append("True %i %i %i " % (applied_load_type, depth_num, sensor_num) + "True")
     return qsub_inputs, qsub_inputs_list, counter
 
 
