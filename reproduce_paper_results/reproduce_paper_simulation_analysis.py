@@ -4,8 +4,8 @@ import numpy as np
 from pathlib import Path
 import problem_setup_fcns as fcns
 
-compute_loads = False
-compute_orig = False
+compute_loads = True
+compute_orig = True
 compute_ss = True
 compute_ss_ensemble = True
 compute_ss_true_ensemble = True
@@ -14,12 +14,7 @@ compute_lattice = True
 compute_custom = True
 compute_ss_bins = True
 
-# bin_list = [0, 0.001, 0.00125, 0.0015, 0.00175, 0.002, 0.00225, 0.0025, 0.00275, 0.003, 0.01]
-# 5 evenly sized bins
-# bin_list = [0, 0.00143989692409, 0.00172195680787, 0.0019795178256, 0.00230540785537, 0.01]
-# bin_list = [0, 0.039099857664977325, 0.046145182920829031, 0.051960331735415595, 0.058210628623313117, 0.25]
 bin_list = [0, 0.14393543185803712, 0.17220304717344215, 0.19785734238406477, 0.23039366502635231, 1.0]
-
 
 mypath = Path(__file__).resolve().parent
 save_path = fcns.create_folder(mypath, "analysis_results")

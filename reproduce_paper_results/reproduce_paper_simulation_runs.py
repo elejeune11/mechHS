@@ -10,18 +10,18 @@ from pathlib import Path
 import problem_setup_fcns as fcns
 import simply_supported_beams as ssb
 
-visualize_loads = False
-create_mesh_rectangle = False
-create_mesh_lattice = False
-create_mesh_devices = False
-run_FEA_rectangle = False
-run_FEA_lattice = False
-create_custom_grid = False
-create_mesh_device = False
-run_FEA_device = False
-run_simply_supported = False
-run_simply_supported_ensemble = False
-run_simply_supported_678910 = False
+visualize_loads = True
+create_mesh_rectangle = True
+create_mesh_lattice = True
+create_mesh_devices = True
+run_FEA_rectangle = True
+run_FEA_lattice = True
+create_custom_grid = True
+create_mesh_device = True
+run_FEA_device = True
+run_simply_supported = True
+run_simply_supported_ensemble = True
+run_simply_supported_678910 = True
 run_simply_supported_ensemble_678910 = True
 
 mypath = Path(__file__).resolve().parent
@@ -214,5 +214,3 @@ if run_simply_supported_ensemble_678910:
     np.save(str(folder) + "/ensemble_ssb_results_8.npy", ensemble_ssb_results_8)
     np.save(str(folder) + "/ensemble_ssb_results_9.npy", ensemble_ssb_results_9)
     np.save(str(folder) + "/ensemble_ssb_results_10.npy", ensemble_ssb_results_10)
-
-
