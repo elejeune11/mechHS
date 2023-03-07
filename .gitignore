@@ -61,3 +61,5 @@ jeff_test/FEA_results/results000049.vtu
 jeff_test/__pycache__/applied_loads.cpython-38.pyc
 jeff_test/__pycache__/fea_simulation.cpython-38.pyc
 jeff_test/__pycache__/problem_setup_fcns.cpython-38.pyc
+reproduce_paper_results/__pycache__/applied_loads.cpython-38.pyc
+reproduce_paper_results/__pycache__/simply_supported_beams.cpython-38.pyc
