@@ -168,8 +168,8 @@ accuracy, spearmanr = fcns.compute_performance(data, input_data_orig, output_dat
 ```
 For the example shown above, we have the following results:
 ```bash
-accuracy: 0.4075
-Spearmans rho: 0.534305437221
+accuracy: 0.42
+Spearmans rho: 0.53
 ```
 
 ## Reproduce the Results in Our Paper <a name="reproduce"></a>
