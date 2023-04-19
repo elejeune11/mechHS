@@ -324,7 +324,7 @@ All python files contained in the ``reproduce_paper_results`` folder are as foll
 ## References to Related Work <a name="references"></a>
 
 This GitHub repository was created to accompany our pre-print:
-* LINK TO BE POSTED
+https://arxiv.org/abs/2304.06505
 
 
 ## Contact Information <a name="contact"></a>
