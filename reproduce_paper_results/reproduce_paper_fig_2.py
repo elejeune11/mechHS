@@ -92,7 +92,8 @@ for m in m_list:
     m_res_all.append(P2_list)
 N_list = np.asarray(N_list)
 P_m0 = ((N_list - 3) / N_list) ** 3.0
-plt.figure(figsize=(3.5, 3.5))
+siz = (3.5, 3.5)
+plt.figure(figsize=siz)
 plt.plot(N_list, P_m0, "k-o", label="m=0")
 label_list = ["m=0.025", "m=0.05", "m=0.1"]
 for kk in range(0, len(m_res_all)):
@@ -106,6 +107,7 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig(str(fig_path) + "/P2.png")
 plt.savefig(str(fig_path) + "/P2.pdf")
+plt.savefig(str(fig_path) + "/P2.eps")
 
 
 daa = 4

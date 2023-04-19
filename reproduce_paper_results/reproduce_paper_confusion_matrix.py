@@ -31,7 +31,7 @@ for _ in range(0, 20):
 
 conf_matrix = confusion_matrix(np.asarray(true_predictions), np.asarray(orig_predictions))
 
-fig, ax = plt.subplots(figsize=(11, 9))
+fig, ax = plt.subplots(figsize=(11 / 9 * 6, 6))
 cax = ax.matshow(conf_matrix, cmap=plt.cm.Reds, alpha=0.5)
 cbar = fig.colorbar(cax, ticks=[0, 5, 10, 15, 20])
 

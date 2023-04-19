@@ -141,10 +141,10 @@ def plot_acc_rho(ax):
 
 plot_acc_rho(ax)
 
-inset_ax = ax.inset_axes([0.625, 0.025, 0.325, 0.4])
+inset_ax = ax.inset_axes([0.625, 0.025, 0.35, 0.425])
 plot_acc_rho(inset_ax)
-inset_ax.set_xlim((0.33, 0.39))
-inset_ax.set_ylim((0.135, 0.215))
+inset_ax.set_xlim((0.345, 0.38))
+inset_ax.set_ylim((0.16, 0.22))
 inset_ax.grid(True)
 inset_ax.set_xticks([])
 inset_ax.set_yticks([])
@@ -152,7 +152,7 @@ ax.indicate_inset_zoom(inset_ax)
 
 
 plt.xlabel(r"Spearman's $\rho$ correlation")
-plt.ylabel("accuracy")
+plt.ylabel("classification accuracy")
 plt.xlim((0.2, 0.9))
 plt.ylim((0.0, 1.0))
 
@@ -170,92 +170,6 @@ plt.savefig(str(fig_path) + "/accuracy_rho_plot.eps")
 #############################################################################################
 # create plots -- accuracy vs. depth
 #############################################################################################
-fig = plt.figure(figsize=(7.5, 5))
-ax = plt.subplot(111)
 
-plt.plot([0, 21], [accuracy_orig, accuracy_orig], "k-", label="input data")
-plt.plot([0, 21], [0.05, 0.05], "k--", label="random guess")
-
-
-def all_pts(ax):
-    mst = 8
-    msr = 12
-    ix = 0
-    for fix_whole_bottom in [True, False]:
-        for depth_num in [1, 2, 3, 4, 5]:
-            for sensor_num in [2, 3, 4, 5]:
-                if depth_num == 1:
-                    depth = 1
-                elif depth_num == 2:
-                    depth = 2.5
-                elif depth_num == 3:
-                    depth = 5.0
-                elif depth_num == 4:
-                    depth = 10.0
-                else:
-                    depth = 20.0
-                if fix_whole_bottom:
-                    ax.plot(depth, accuracy_rect[ix], "D", color=(sensor_num / 5.0, sensor_num / 5.0, sensor_num / 5.0), linestyle="None", markersize=10, markeredgecolor=plt.cm.coolwarm((depth_num - 1) / 4), markeredgewidth=3, zorder=100)
-                    ax.plot(depth, accuracy_rect[ix], marker="$R%i$" % (sensor_num), linestyle="None", color=(0, 0, 0), markersize=8, zorder=200)
-                    # ax.plot(depth, accuracy_rect[ix], "s", color=plt.cm.plasma(0.5 + (sensor_num - 2) / 6), markersize=8 + depth_num, markeredgecolor="k", markeredgewidth=1.5)
-                    # ax.plot(depth, accuracy_rect[ix], marker="$R%i$" % (sensor_num), color=(0, 0, 0), markersize=6 + depth_num)
-                else:
-                    ax.plot(depth, accuracy_rect[ix], "s", color=(sensor_num / 5.0, sensor_num / 5.0, sensor_num / 5.0), linestyle="None", markersize=10, markeredgecolor=plt.cm.coolwarm((depth_num - 1) / 4), markeredgewidth=3, zorder=100)
-                    ax.plot(depth, accuracy_rect[ix], marker="$R%i$" % (sensor_num), color=(0, 0, 0), linestyle="None", markersize=8, zorder=200)
-                    # ax.plot(depth, accuracy_rect[ix], "s", color=plt.cm.plasma(0.5 + (sensor_num - 2) / 6), markersize=8 + depth_num)
-                    # ax.plot(depth, accuracy_rect[ix], marker="$R%i$" % (sensor_num), color=(0, 0, 0), markersize=6 + depth_num)
-                ix += 1
-    ax.scatter(100, 100, marker="$R$", s=mst * 5, color=(0, 0, 0), label="rectangle")
-    ax.plot(100, 100, marker="s", linestyle="None", color=(0.75, 0.75, 0.75), markersize=10, zorder=100, label="free btm")
-    ax.plot(100, 100, marker="D", linestyle="None", color=(0.75, 0.75, 0.75), markersize=10, zorder=100, label="fixed btm")
-    ax.plot(100, 100, marker="s", linestyle="None", color=(0.5, 0.5, 0.5), markersize=10, zorder=100, markeredgecolor=plt.cm.coolwarm((1 - 1) / 4), markeredgewidth=3, label="depth = 1.0")
-    ax.plot(100, 100, marker="s", linestyle="None", color=(0.5, 0.5, 0.5), markersize=10, zorder=100, markeredgecolor=plt.cm.coolwarm((2 - 1) / 4), markeredgewidth=3, label="depth = 2.5")
-    ax.plot(100, 100, marker="s", linestyle="None", color=(0.5, 0.5, 0.5), markersize=10, zorder=100, markeredgecolor=plt.cm.coolwarm((3 - 1) / 4), markeredgewidth=3, label="depth = 5.0")
-    ax.plot(100, 100, marker="s", linestyle="None", color=(0.5, 0.5, 0.5), markersize=10, zorder=100, markeredgecolor=plt.cm.coolwarm((4 - 1) / 4), markeredgewidth=3, label="depth = 10.0")
-    ax.plot(100, 100, marker="s", linestyle="None", color=(0.5, 0.5, 0.5), markersize=10, zorder=100, markeredgecolor=plt.cm.coolwarm((5 - 1) / 4), markeredgewidth=3, label="depth = 20.0")
-    ax.plot([10, 10, 10], accuracy_lattice, "o", markersize=msr, markeredgecolor=(1, 0.25, 0.25), color=(0.75, 0.75, 0.75), zorder=80)
-    for kk in range(0, 3):
-        ax.plot(10, accuracy_lattice[kk], marker="$L%i$" % (kk + 3), markersize=mst, color=(1, 0.25, 0.25), zorder=100)
-    ax.scatter(100, 100, marker="$L$", s=mst * 5, color=(1, 0.25, 0.25), label="lattice")
-    ax.plot([10, 10, 10], accuracy_custom, "o", markersize=msr, markeredgecolor=(.5, 0.25, 0.25), color=(0.75, 0.75, 0.75), zorder=80)
-    for kk in range(0, 3):
-        ax.plot(10, accuracy_custom[kk], marker="$C%i$" % (kk + 1), markersize=mst, color=(.5, 0.25, 0.25), zorder=100)
-    ax.scatter(100, 100, marker="$C$", s=mst * 5, color=(0.5, 0.25, 0.25), label="custom")
-    return
-
-
-all_pts(ax)
-
-inset_ax = ax.inset_axes([0.625, 0.35, 0.2, 0.6])
-all_pts(inset_ax)
-inset_ax.set_xlim((9.4, 10.6))
-inset_ax.set_ylim((0.36, 0.415))
-inset_ax.grid(True)
-inset_ax.set_xticks([])
-inset_ax.set_yticks([])
-ax.indicate_inset_zoom(inset_ax)
-
-
-plt.xlabel("depth")
-plt.ylabel("accuracy")
-plt.ylim((0.0, 1.0))
-plt.xlim((0.0, 21.0))
-
-box = ax.get_position()
-ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
-ax.set_xticks([1.0, 2.5, 5.0, 10.0, 20.0])
-
-# Put a legend to the right of the current axis
-ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-plt.grid(True)
-plt.title("functional performance")
-
-plt.savefig(str(fig_path) + "/accuracy_depth_plot.png")
-plt.savefig(str(fig_path) + "/accuracy_depth_plot.eps")
-
-
-############################################################################
-# legend figure
-############################################################################
 
 aa = 44

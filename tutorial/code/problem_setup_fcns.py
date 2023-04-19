@@ -39,7 +39,58 @@ def values_to_hash_all(data_array: np.ndarray):
     return hash_string_all
 
 
-def hash_probability_dist_all(input_data: np.ndarray, dist_orig: np.ndarray, bin_list: List = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]):
+# def hash_probability_dist_all(input_data: np.ndarray, dist_orig: np.ndarray, num_bins: int):
+#     hash_values = values_to_hash_all(input_data)
+#     match_all = []
+#     for kk in range(0, len(hash_values)):
+#         for jj in range(kk + 1, len(hash_values)):
+#             if hash_values[kk] == hash_values[jj]:
+#                 match_all.append(1)
+#             else:
+#                 match_all.append(0)
+#     match_all = np.asarray(match_all)
+#     arg_sort = np.argsort(dist_orig)
+#     dist_orig = dist_orig[arg_sort]
+#     match_all = match_all[arg_sort]
+#     bin_size = int(np.floor(dist_orig.shape[0] / num_bins))
+#     middle_dist = []
+#     match_ratio = []
+#     for kk in range(0, num_bins):
+#         ix_start = kk * bin_size
+#         ix_end = (kk + 1) * bin_size
+#         if kk == num_bins - 1:
+#             ix_end = -1
+#         mean_dist = np.mean(dist_orig[ix_start:ix_end])
+#         ratio = np.sum(match_all[ix_start:ix_end]) / match_all[ix_start:ix_end].shape[0]
+#         middle_dist.append(mean_dist)
+#         match_ratio.append(ratio)
+#     return middle_dist, match_ratio, hash_values
+# def hash_probability_dist_all(input_data: np.ndarray, dist_orig: np.ndarray, bin_list: List = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]):
+#     hash_values = values_to_hash_all(input_data)
+#     match_all = []
+#     for kk in range(0, len(hash_values)):
+#         for jj in range(kk + 1, len(hash_values)):
+#             if hash_values[kk] == hash_values[jj]:
+#                 match_all.append(1)
+#             else:
+#                 match_all.append(0)
+#     match_all = np.asarray(match_all)
+#     arg_sort = np.argsort(dist_orig)
+#     dist_orig = dist_orig[arg_sort]
+#     match_all = match_all[arg_sort]
+#     middle_dist = []
+#     match_ratio = []
+#     for kk in range(0, len(bin_list) - 1):
+#         ix_start = np.argmin(np.abs(dist_orig - bin_list[kk]))
+#         ix_end = np.argmin(np.abs(dist_orig - bin_list[kk + 1]))
+#         mean_dist = np.mean(dist_orig[ix_start:ix_end])
+#         ratio = np.sum(match_all[ix_start:ix_end]) / match_all[ix_start:ix_end].shape[0]
+#         middle_dist.append(mean_dist)
+#         match_ratio.append(ratio)
+#     return middle_dist, match_ratio, hash_values
+def hash_probability_dist_all(input_data: np.ndarray, dist_orig: np.ndarray, bin_list: List = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0], is_rect: bool = False):
+    if is_rect:
+        input_data = (1.0 / (0.025 * 10)) * input_data
     match_all = []
     for kk in range(0, input_data.shape[0]):
         for jj in range(kk + 1, input_data.shape[0]):
@@ -64,6 +115,27 @@ def hash_probability_dist_all(input_data: np.ndarray, dist_orig: np.ndarray, bin
     return middle_dist, match_ratio
 
 
+def hash_dist_all(input_data: np.ndarray, dist_orig: np.ndarray, bin_list: List = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0], is_rect: bool = False):
+    if is_rect:
+        input_data = (1.0 / (0.025 * 10)) * input_data
+    dist_hash = []
+    for kk in range(0, input_data.shape[0]):
+        for jj in range(kk + 1, input_data.shape[0]):
+            dist_hash.append(np.max(np.abs(input_data[kk, :] - input_data[jj, :])))
+    dist_hash = np.asarray(dist_hash)
+    arg_sort = np.argsort(dist_orig)
+    dist_orig = dist_orig[arg_sort]
+    dist_hash = dist_hash[arg_sort]
+    orig_dist = []
+    hash_dist = []
+    for kk in range(0, len(bin_list) - 1):
+        ix_start = np.argmin(np.abs(dist_orig - bin_list[kk]))
+        ix_end = np.argmin(np.abs(dist_orig - bin_list[kk + 1]))
+        orig_dist.append(np.mean(dist_orig[ix_start:ix_end]))
+        hash_dist.append(np.mean(dist_hash[ix_start:ix_end]))
+    return orig_dist, hash_dist
+
+
 def compute_unique_fraction(hash_values_str_list: List):
     """Given the hash values string list. Will compute the collision fraction."""
     num_unique = len(Counter(hash_values_str_list).keys())
@@ -72,12 +144,12 @@ def compute_unique_fraction(hash_values_str_list: List):
     return unique_fraction
 
 
-def fit_ml_model(input_data: np.ndarray, output_data_vector: np.ndarray) -> object:
+def fit_ml_model(input_data: np.ndarray, output_data_vector: np.ndarray, choose_p: int = 1) -> object:
     """Given input and output data. Will fit a simple ML model."""
     scaler = StandardScaler()
     scaler.fit(input_data)
     data_inputs_scaled = scaler.transform(input_data)
-    ml_model = KNeighborsClassifier(n_neighbors=1)
+    ml_model = KNeighborsClassifier(n_neighbors=1, p=choose_p)
     ml_model.fit(data_inputs_scaled, output_data_vector)
     y_mean = ml_model.predict(data_inputs_scaled)
     train_accuracy = accuracy_score(y_mean, output_data_vector)
@@ -91,7 +163,7 @@ def ml_model_predict(scaler: object, ml_model: object, new_input: np.ndarray):
     return y_mean
 
 
-def evaluate_LOOCV(input_data: np.ndarray, output_data_vector: np.ndarray) -> np.double:
+def evaluate_LOOCV(input_data: np.ndarray, output_data_vector: np.ndarray, choose_p: int = 1) -> np.double:
     """Given data. Will evaluate NN model via LOOCV."""
     loo = LeaveOneOut()
     predictions = []
@@ -101,7 +173,7 @@ def evaluate_LOOCV(input_data: np.ndarray, output_data_vector: np.ndarray) -> np
         output_train = output_data_vector[train_index]
         input_test = input_data[test_index, :]
         output_test = output_data_vector[test_index]
-        scaler, ml_model, _ = fit_ml_model(input_train, output_train)
+        scaler, ml_model, _ = fit_ml_model(input_train, output_train, choose_p)
         predict_test = ml_model_predict(scaler, ml_model, input_test)
         predictions.append(predict_test)
         truth.append(output_test)
@@ -157,15 +229,15 @@ def dist_vector_all(input_data: np.ndarray, dist_type: int = 1):
                 dist = dist_vector_L_infty(input_data[kk, :], input_data[jj, :])
             elif dist_type == 2:
                 dist = dist_vector_cosine_similarity(input_data[kk, :], input_data[jj, :])
-            else:
+            elif dist_type == 3:
                 dist = dist_vector_euclidean(input_data[kk, :], input_data[jj, :])
             dist_all.append(dist)
     return np.asarray(dist_all)
 
 
-def compute_correlation(input_data_orig: np.ndarray, input_data_hash: np.ndarray):
-    dist_orig = dist_vector_all(input_data_orig)
-    dist_hash = dist_vector_all(input_data_hash)
+def compute_correlation(input_data_orig: np.ndarray, input_data_hash: np.ndarray, dist_type: int = 1):
+    dist_orig = dist_vector_all(input_data_orig, dist_type)
+    dist_hash = dist_vector_all(input_data_hash, dist_type)
     res = stats.spearmanr(dist_orig, dist_hash)
     return res.correlation, dist_orig, dist_hash
 
@@ -203,9 +275,12 @@ def compute_performance_simply_supported(all_loads: List, input_data_orig: np.nd
     return accuracy, spearmanr
 
 
-def compute_performance(input_data: np.ndarray, input_data_orig: np.ndarray, output_data: np.ndarray):
-    accuracy, _, _ = evaluate_LOOCV(input_data, output_data)
-    spearmanr, _, _ = compute_correlation(input_data_orig, input_data)
+def compute_performance(input_data: np.ndarray, input_data_orig: np.ndarray, output_data: np.ndarray, dist_type: int = 1):
+    if dist_type == 1:
+        accuracy, _, _ = evaluate_LOOCV(input_data, output_data)
+    elif dist_type == 3:
+        accuracy, _, _ = evaluate_LOOCV(input_data, output_data, 2)
+    spearmanr, _, _ = compute_correlation(input_data_orig, input_data, dist_type)
     return accuracy, spearmanr
 
 

@@ -126,8 +126,8 @@ for kk in range(0, 3):
     name_list.append("lattice")
     ns_list.append(kk + 3)
     d_list.append(10)
-    rho_list.append(accuracy_lattice[kk])
-    acc_list.append(spearmanr_lattice[kk])
+    rho_list.append(spearmanr_lattice[kk])
+    acc_list.append(accuracy_lattice[kk])
 
 # custom
 for kk in range(0, 3):
@@ -137,8 +137,8 @@ for kk in range(0, 3):
     else:
         ns_list.append(5)
     d_list.append(10)
-    rho_list.append(accuracy_custom[kk])
-    acc_list.append(spearmanr_custom[kk])
+    rho_list.append(spearmanr_custom[kk])
+    acc_list.append(accuracy_custom[kk])
 
 
 with open(str(tab_path) + "/names.txt", "w") as text_file:
