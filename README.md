@@ -319,7 +319,7 @@ All python files contained in the ``reproduce_paper_results`` folder are as foll
 | ``reproduce_paper_simulation_analysis.py`` | script to run all analysis for the paper |
 | ``reproduce_paper_simulation_runs.py`` | script to run all simulations for the paper |
 | ``simply_supported_beams.py`` | script with functions to simulate composite simply supported beams |
-
+| ``test_simply_supported_beams.py``| script to validate results with analytical solutions|
 
 ## References to Related Work <a name="references"></a>
 
