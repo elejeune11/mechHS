@@ -4,15 +4,15 @@ import numpy as np
 from pathlib import Path
 import problem_setup_fcns as fcns
 
-compute_loads = False
-compute_orig = False
-compute_ss = False
-compute_ss_ensemble = False
-compute_ss_true_ensemble = False
-compute_rect = False
-compute_lattice = False
-compute_custom = False
-compute_ss_bins = False
+compute_loads = True
+compute_orig = True
+compute_ss = True
+compute_ss_ensemble = True
+compute_ss_true_ensemble = True
+compute_rect = True
+compute_lattice = True
+compute_custom = True
+compute_ss_bins = True
 compute_L2 = True
 
 bin_list = [0, 0.14393543185803712, 0.17220304717344215, 0.19785734238406477, 0.23039366502635231, 1.0]
